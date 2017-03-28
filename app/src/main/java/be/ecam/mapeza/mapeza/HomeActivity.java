@@ -11,7 +11,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         //THIS IS A TEST
         //THIS IS A SECOND TEST
-        //
+        //THIS IS A THIRD TEST
 
     }
 }
