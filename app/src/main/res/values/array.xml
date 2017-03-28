@@ -1,0 +1,12 @@
+<resources>
+    <array name="place_preference_labels">
+        <item>Bars</item>
+        <item>Restaurants</item>
+        <item>Monuments</item>
+    </array>
+    <array name="place_preference_values">
+        <item>bars</item>
+        <item>restaurants</item>
+        <item>monuments</item>
+    </array>
+</resources>
