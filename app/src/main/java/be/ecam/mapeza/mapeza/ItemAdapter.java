@@ -67,7 +67,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemAdapterVie
         //if(!mData.moveToPosition(position)) return;
         itemAdapterViewHolder.element1.setText("Element" + (position+1));
         itemAdapterViewHolder.element2.setText("Another line to describe");
-        itemAdapterViewHolder.element3.setText("last line to describe ");
+        itemAdapterViewHolder.element3.setText("last line to describe");
 
     }
 

@@ -3,12 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/activity_weather_list">
-    <TextView
-        android:id="@+id/elem0"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="test"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/resultView"

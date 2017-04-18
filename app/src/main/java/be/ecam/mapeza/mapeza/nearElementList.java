@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -19,12 +20,14 @@ public class nearElementList extends AppCompatActivity implements ItemAdapter.It
     //textView text;
     private RecyclerView resultView;
     private ItemAdapter itemAdapter;
-
+    private static final int QUERY_LOADER = 22;
+    Bundle queryURL = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_near_element_list);
+
 
 
         //initialisation du RecyclerView
@@ -38,6 +41,9 @@ public class nearElementList extends AppCompatActivity implements ItemAdapter.It
         resultView.setAdapter(itemAdapter);
 
         LoaderManager loaderManager = getSupportLoaderManager();
+        Toast.makeText(this,"hello",Toast.LENGTH_LONG).show();
+
+        loaderManager.restartLoader(QUERY_LOADER,queryURL,this);
     }
 
     @Override
