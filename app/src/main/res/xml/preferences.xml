@@ -11,4 +11,9 @@
         android:entries="@array/place_preference_labels">
     </ListPreference>
 
+    <CheckBoxPreference
+        android:title="Show Call UI"
+        android:defaultValue="true"
+        android:summary="Show Call Interface when clicking call button"
+        android:key="checkboxPref" />
 </PreferenceScreen>
