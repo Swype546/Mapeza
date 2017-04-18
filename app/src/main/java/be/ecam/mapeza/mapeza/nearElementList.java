@@ -15,14 +15,14 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import static be.ecam.mapeza.mapeza.R.id.resultView;
+import static be.ecam.mapeza.mapeza.loadPlaces.getPlaces;
 
-public class nearElementList extends AppCompatActivity implements ItemAdapter.ItemAdapterOnClickHandler, LoaderManager.LoaderCallbacks<String>, SharedPreferences.OnSharedPreferenceChangeListener {
+public class nearElementList extends AppCompatActivity implements ItemAdapter.ItemAdapterOnClickHandler, LoaderManager.LoaderCallbacks<ArrayList<Place>>, SharedPreferences.OnSharedPreferenceChangeListener {
     //textView text;
     private RecyclerView resultView;
     private ItemAdapter itemAdapter;
     private static final int QUERY_LOADER = 22;
     Bundle queryURL = new Bundle();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +36,7 @@ public class nearElementList extends AppCompatActivity implements ItemAdapter.It
         resultView.setLayoutManager(layoutManager);
         resultView.setHasFixedSize(true);
 
+
         //initialisation de l'item adapter
         itemAdapter = new ItemAdapter(this);
         resultView.setAdapter(itemAdapter);
@@ -43,6 +44,7 @@ public class nearElementList extends AppCompatActivity implements ItemAdapter.It
         LoaderManager loaderManager = getSupportLoaderManager();
         Toast.makeText(this,"hello",Toast.LENGTH_LONG).show();
 
+        //On charge les nearbyPlaces
         loaderManager.restartLoader(QUERY_LOADER,queryURL,this);
     }
 
@@ -56,7 +58,7 @@ public class nearElementList extends AppCompatActivity implements ItemAdapter.It
     }
 
     @Override
-    public void onLoaderReset(Loader<String> loader){}
+    public void onLoaderReset(Loader<ArrayList<Place>> loader){}
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -64,21 +66,23 @@ public class nearElementList extends AppCompatActivity implements ItemAdapter.It
 
     //Ajout pour le Loader Manager
     @Override
-    public Loader<String> onCreateLoader(int id, final Bundle args) {
-        return new AsyncTaskLoader<String>(this) {
+    public Loader<ArrayList<Place>> onCreateLoader(int id, final Bundle args) {
+        return new AsyncTaskLoader<ArrayList<Place>>(this) {
             @Override
             protected void onStartLoading() {
                 forceLoad();
             }
 
             @Override
-            public String loadInBackground(){return null;};
+            public ArrayList<Place> loadInBackground(){
+                return getPlaces(500.0);
+            };
         };
     }
 
     @Override
-    public void onLoadFinished(Loader<String> loader, String data){
-        itemAdapter.setData(new String[]{"a","b","c","d","e"});
+    public void onLoadFinished(Loader<ArrayList<Place>> loader, ArrayList<Place> data){
+        itemAdapter.setData(data);
     }
 
 }

@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 /**
  * Created by 13069 on 28-03-17.
  */
@@ -15,7 +17,7 @@ import android.widget.TextView;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemAdapterViewHolder>{
 
     //private ArrayList<Weather> mData = null;
-    private String[] mData = null;
+    private ArrayList<Place> mData = null;
     private ItemAdapterOnClickHandler clickHandler;
 
     public ItemAdapter(ItemAdapterOnClickHandler clickHandler) {
@@ -65,19 +67,19 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemAdapterVie
     public void onBindViewHolder(ItemAdapterViewHolder itemAdapterViewHolder, int position) {
 
         //if(!mData.moveToPosition(position)) return;
-        itemAdapterViewHolder.element1.setText("Element" + (position+1));
-        itemAdapterViewHolder.element2.setText("Another line to describe");
-        itemAdapterViewHolder.element3.setText("last line to describe");
+        itemAdapterViewHolder.element1.setText(mData.get(position).getPlace_name());
+        itemAdapterViewHolder.element2.setText(mData.get(position).getAddress());
+        itemAdapterViewHolder.element3.setText(mData.get(position).getType());
 
     }
 
     @Override
     public int getItemCount() {
         if (null == mData) return 0;
-        return mData.length;
+        return mData.size();
     }
 
-    public void setData(String[] data) {
+    public void setData(ArrayList<Place> data) {
         mData = data;
         notifyDataSetChanged();
     }
