@@ -10,4 +10,4 @@
 </ul>
 
 <b>Clé API:</b>
-AIzaSyBEiXhIMqVDsrrXSBAEyFso1u60AScmXdk
+AIzaSyBLkj8WSx2AjfJNN0-BEYplZQWwNs8mYBU
