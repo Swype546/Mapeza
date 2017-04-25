@@ -123,7 +123,6 @@ public class HomeActivity extends AppCompatActivity {
     // bouton OK pour sauver les lieux favoris sélectionnés
     private void checkButtonClick() {
 
-
         Button myButton = (Button) findViewById(R.id.select_favorite);
         myButton.setOnClickListener(new OnClickListener() {
 
@@ -134,6 +133,7 @@ public class HomeActivity extends AppCompatActivity {
                 //responseText+="The following were selected...\n";
 
                 ArrayList<Place> placeList = dataAdapter.placeList;
+                favoriteSelectedTypePlaceList.clear();
                 for(int i=0;i<favoritePlaceList.getList().size();i++){
                     Place place = favoritePlaceList.getPlace(i);
                     if(place.isSelected()){
@@ -165,6 +165,8 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                        json, Toast.LENGTH_LONG).show();
                 prefsEditor.commit();
+
+                // And go to next activity (screen).
 
             }
         });
