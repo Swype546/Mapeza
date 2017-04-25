@@ -59,6 +59,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         */
+
     }
 
     private class MyCustomAdapter extends ArrayAdapter<Place> {
