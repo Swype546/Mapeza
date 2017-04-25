@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Mapeza</string>
+    <string name="title_activity_place_details">Map</string>
 </resources>
