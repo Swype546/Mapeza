@@ -9,9 +9,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        //THIS IS A TEST
-        //THIS IS A SECOND TEST
-        //THIS IS A THIRD TEST
-
+        //This is a test
     }
 }
