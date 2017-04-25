@@ -61,14 +61,14 @@ public class HomeActivity extends AppCompatActivity {
         */
     }
 
-    private class MyCustomAdapter extends ArrayAdapter<Place> {
+    private class MyCustomAdapter extends ArrayAdapter<PlaceType> {
 
-        private ArrayList<Place> placeList;
+        private ArrayList<PlaceType> placeList;
 
         public MyCustomAdapter(Context context, int textViewResourceId,
-                               ArrayList<Place> placeList) {
+                               ArrayList<PlaceType> placeList) {
             super(context, textViewResourceId, favoritePlaceList.getList());
-            this.placeList = new ArrayList<Place>();
+            this.placeList = new ArrayList<PlaceType>();
             this.placeList.addAll(placeList);
         }
 
@@ -94,7 +94,7 @@ public class HomeActivity extends AppCompatActivity {
                 holder.name.setOnClickListener( new OnClickListener() {
                     public void onClick(View v) {
                         CheckBox cb = (CheckBox) v ;
-                        Place place = (Place) cb.getTag();
+                        PlaceType place = (PlaceType) cb.getTag();
                         /*
                         Toast.makeText(getApplicationContext(),
                                 "Clicked on Checkbox: " + cb.getText() +
@@ -109,7 +109,7 @@ public class HomeActivity extends AppCompatActivity {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            Place place = favoritePlaceList.getPlace(position);
+            PlaceType place = favoritePlaceList.getPlace(position);
             holder.name.setText(place.getName());
             holder.name.setChecked(place.isSelected());
             holder.name.setTag(place);
@@ -132,10 +132,10 @@ public class HomeActivity extends AppCompatActivity {
                 //String responseText = new String();
                 //responseText+="The following were selected...\n";
 
-                ArrayList<Place> placeList = dataAdapter.placeList;
+                ArrayList<PlaceType> placeList = dataAdapter.placeList;
                 favoriteSelectedTypePlaceList.clear();
                 for(int i=0;i<favoritePlaceList.getList().size();i++){
-                    Place place = favoritePlaceList.getPlace(i);
+                    PlaceType place = favoritePlaceList.getPlace(i);
                     if(place.isSelected()){
                         //responseText.append("\n" + place.getName());
                         String selectedPlace=place.getName();
