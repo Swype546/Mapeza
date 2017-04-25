@@ -2,6 +2,7 @@ package be.ecam.mapeza.mapeza;
 // à remplacer par le nom de domaine adéquat : be.ecam.mapeza.mapeza
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -166,6 +167,11 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                        json, Toast.LENGTH_LONG).show();
                 prefsEditor.commit();
+
+                Class destinationClass = nearElementList.class;
+                Intent intent = new Intent(HomeActivity.this, destinationClass);
+                //intent.putExtra(intent.EXTRA_)
+                startActivity(intent);
 
                 // And go to next activity (screen).
 
