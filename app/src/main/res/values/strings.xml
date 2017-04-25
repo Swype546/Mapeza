@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Mapeza</string>
+
+    <string name="default_info_title" />
+    <string name="default_info_snippet" />
+    <string name="pick_place" />
+
     <string name="title_activity_place_details">Map</string>
+
 </resources>
