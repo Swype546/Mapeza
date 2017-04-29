@@ -68,4 +68,9 @@ public class PlaceList
     {
         return places_code[i];
     }
+
+    public void clear()
+    {
+        placesList.clear();
+    }
 }

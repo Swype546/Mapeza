@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -142,14 +143,15 @@ public class HomeActivity extends AppCompatActivity {
                     PlaceType place = favoritePlaceList.getPlace(i);
                     if(place.isSelected()){
                         //responseText.append("\n" + place.getName());
+
                         String selectedPlace=place.getName();
                         favoriteSelectedTypePlaceList.add(favoritePlaceList.getMatchingToAPICode(i));
                         //String favoriteString = (String) favoriteSelectedPlaceList.get(favoriteSelectedPlaceList.size() - 1);
                         //Log.v("test",String.valueOf(i));
                         //Log.v("test",responseText);
-                        /*Toast.makeText(getApplicationContext(),
-                                favoriteString, Toast.LENGTH_LONG).show();
-                        */
+                        //Toast.makeText(getApplicationContext(),
+                        //favoriteString, Toast.LENGTH_LONG).show();
+
                     }
                 }
 
@@ -160,7 +162,8 @@ public class HomeActivity extends AppCompatActivity {
                /* Toast.makeText(getApplicationContext(),
                         Arrays.toString(favoriteSelectedPlaceList.toArray()), Toast.LENGTH_LONG).show();
                 */
-                mPrefs = getPreferences(MODE_PRIVATE);
+                //mPrefs = getPreferences(MODE_PRIVATE);
+                mPrefs = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
                 SharedPreferences.Editor prefsEditor = mPrefs.edit();
                 Gson gson = new Gson();
                 String json = gson.toJson(favoriteSelectedTypePlaceList); // myObject - instance of MyObject
@@ -174,7 +177,6 @@ public class HomeActivity extends AppCompatActivity {
                 Intent intent = new Intent(HomeActivity.this, destinationClass);
                 //intent.putExtra(intent.EXTRA_)
                 startActivity(intent);
-
                 // And go to next activity (screen).
 
             }
