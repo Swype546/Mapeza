@@ -170,7 +170,7 @@ public class HomeActivity extends AppCompatActivity {
                 prefsEditor.putString("favoriteSelectedTypePlaceList", json);
 
                 Toast.makeText(getApplicationContext(),
-                       json, Toast.LENGTH_LONG).show();
+                        json, Toast.LENGTH_LONG).show();
                 prefsEditor.commit();
 
                 Class destinationClass = nearElementList.class;
