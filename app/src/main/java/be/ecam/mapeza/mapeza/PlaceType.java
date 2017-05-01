@@ -29,3 +29,4 @@ public class PlaceType
         this.name = name;
     }
 }
+
