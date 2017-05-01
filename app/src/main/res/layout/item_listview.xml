@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:clickable="true" >
 
+
     <CheckBox
         android:id="@+id/check"
         android:layout_width="match_parent"

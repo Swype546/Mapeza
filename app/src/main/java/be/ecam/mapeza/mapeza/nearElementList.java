@@ -10,11 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import static be.ecam.mapeza.mapeza.R.id.resultView;
 import static be.ecam.mapeza.mapeza.loadPlaces.getPlaces;
 
 public class nearElementList extends AppCompatActivity implements ItemAdapter.ItemAdapterOnClickHandler, LoaderManager.LoaderCallbacks<ArrayList<Place>>, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -23,6 +25,12 @@ public class nearElementList extends AppCompatActivity implements ItemAdapter.It
     private ItemAdapter itemAdapter;
     private static final int QUERY_LOADER = 22;
     Bundle queryURL = new Bundle();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +55,20 @@ public class nearElementList extends AppCompatActivity implements ItemAdapter.It
         //On charge les nearbyPlaces
         loaderManager.restartLoader(QUERY_LOADER,queryURL,this);
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                // Comportement du bouton "A Propos"
+                Intent testActivity = new Intent(nearElementList.this, MenuActivity.class);
 
+                startActivity(testActivity);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     @Override
     public void onClick(int index) {
         Context context = this;

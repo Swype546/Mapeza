@@ -2,6 +2,7 @@ package be.ecam.mapeza.mapeza;
 // à remplacer par le nom de domaine adéquat : be.ecam.mapeza.mapeza
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,10 +11,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -26,7 +31,12 @@ public class HomeActivity extends AppCompatActivity {
     PlaceList favoritePlaceList = new PlaceList();
     ArrayList favoriteSelectedTypePlaceList = new ArrayList();
     private static final String TAG = HomeActivity.class.getSimpleName();
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +48,24 @@ public class HomeActivity extends AppCompatActivity {
 
         checkButtonClick();
 
+
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                // Comportement du bouton "A Propos"
+                Intent testActivity = new Intent(HomeActivity.this, MenuActivity.class);
+
+                startActivity(testActivity);
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     private void displayListView() {
 
@@ -122,6 +149,7 @@ public class HomeActivity extends AppCompatActivity {
         }
 
     }
+
 
     // bouton OK pour sauver les lieux favoris sélectionnés
     private void checkButtonClick() {
