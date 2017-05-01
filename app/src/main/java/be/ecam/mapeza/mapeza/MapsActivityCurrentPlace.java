@@ -122,7 +122,8 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
             @Override
             public ArrayList<Place> loadInBackground(){
-                return getPlaces(500.0);
+                //return getPlaces(500.0);
+                return new ArrayList<Place>();
             };
         };
     }

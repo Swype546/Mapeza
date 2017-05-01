@@ -59,5 +59,8 @@ public class Place {
     public double getLat(){return this.lat;}
     public double getLng(){return this.lng;}
     public static ArrayList<Place> getPlaces(){return array;}
-
+    public static void clearArray()
+    {
+        array.clear();
+    }
 }
