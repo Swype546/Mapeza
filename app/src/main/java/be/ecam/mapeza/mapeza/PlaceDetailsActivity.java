@@ -1,10 +1,17 @@
 package be.ecam.mapeza.mapeza;
-import android.support.v4.app.FragmentActivity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -17,16 +24,22 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
-public class PlaceDetailsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class PlaceDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final String TAG = PlaceDetailsActivity.class.getSimpleName();
+    private DBHelper FavoritesDBHElper;
     private GoogleApiClient mGoogleApiClient;
-    private String placeId = "ChIJMSHd8mnEw0cR5So9dEPw0lU";
+    private String placeId;
+    private be.ecam.mapeza.mapeza.Place mPlace;
     private LatLng map;
-    private Place mPlace;
+    private Place gPlace;
     private GoogleMap mMap;
-    private TextView placeDetails;
+    private TextView placeDetailsAll;
+    private TextView placeDetailsName;
+    private ImageButton favorite;
+    private RatingBar ratingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +47,20 @@ public class PlaceDetailsActivity extends FragmentActivity implements OnMapReady
         setContentView(R.layout.activity_place_details);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.placeDetailsMap);
         mapFragment.getMapAsync(this);
+
+        // Default : Brussels
+        this.map = new LatLng(50.85045, 4.34878);
+        // Default placeId and mPlace set to ECAM
+        this.placeId = "ChIJMSHd8mnEw0cR5So9dEPw0lU";
+        String name = "ECAM";
+        String addr = "Prom. de l'Alma 50, 1200 Woluwe-Saint-Lambert, Belgium";
+        String type = "School";
+        Double lat = 50.8501926;
+        Double lng = 4.4541356;
+        this.mPlace = new be.ecam.mapeza.mapeza.Place(this.placeId, name,
+                addr, type, lat, lng);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -43,12 +68,80 @@ public class PlaceDetailsActivity extends FragmentActivity implements OnMapReady
                 .enableAutoManage(this, null)
                 .build();
 
+        ratingBar = (RatingBar) findViewById(R.id.PlaceDetailsRatingBar);
+        ratingBar.setIsIndicator(true);
+        ratingBar.setRating(0);
+
+        FavoritesDBHElper = new DBHelper(this);
+
+        // Restore data when rotating device
+        if(savedInstanceState != null) {
+            Log.d(TAG, "onCreate() Restoring previous state");
+            if(savedInstanceState.containsKey("PlaceDetailsSaveInstanceState")) {
+                this.placeId = savedInstanceState.getString("PlaceDetailsSaveInstanceState");
+            }
+        }
+        else {
+            // Retrieving the Place object send by the previous activity (nearElementList, FavoritesActivity or Map)
+            String jsonPlace = "";
+            Bundle extras = this.getIntent().getExtras();
+            if (extras != null) {
+                jsonPlace = extras.getString("PlaceDetails");
+                this.mPlace = new Gson().fromJson(jsonPlace, be.ecam.mapeza.mapeza.Place.class);
+                Log.d(TAG, this.mPlace.getPlace_name());
+                // Retrieve placeId from the retrieved Place object
+                this.placeId = this.mPlace.getPlace_id();
+            }
+        }
+
+        Log.d(TAG, placeId);
+        // Using Google Places API with placeId
         PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                 .getPlaceById(mGoogleApiClient, placeId);
         placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
 
-        placeDetails = (TextView) findViewById(R.id.place_details_text);
-        placeDetails.setText("Loading ...");
+        placeDetailsAll = (TextView) findViewById(R.id.placeDetailsAll);
+        placeDetailsName = (TextView) findViewById(R.id.PlaceDetailsName);
+        placeDetailsAll.setText("Loading ...");
+
+
+
+        favorite = (ImageButton)findViewById(R.id.placeDetailsFavBtn);
+
+        if(FavoritesDBHElper.checkPlaceById(placeId)){
+            favorite.setSelected(true);
+        } else {
+            favorite.setSelected(false);
+        }
+        favorite.setOnClickListener(new View.OnClickListener()   {
+            @Override
+            public void onClick(View v)  {
+                if(!favorite.isSelected()){
+                    if(FavoritesDBHElper.insert(mPlace)) {
+                        showToast("Successfully added to favorites.");
+                        favorite.setSelected(true);
+                    } else {
+                        showToast("Failure, please try again.");
+                    }
+                } else {
+                    if(FavoritesDBHElper.delete(placeId)) {
+                        showToast("Successfully removed from favorites.");
+                        favorite.setSelected(false);
+                    } else {
+                        showToast("Failure, please try again.");
+                    }
+                }
+            }
+        });
+    }
+
+    private void showToast(String txt) {
+        Toast.makeText(this, txt, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onDestroy () {
+        super.onDestroy();
     }
 
     @Override
@@ -63,25 +156,18 @@ public class PlaceDetailsActivity extends FragmentActivity implements OnMapReady
         super.onStop();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("PlaceDetailsSaveInstanceState", placeId);
+    }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker and move camera
-        // Default : Brussels
-        map = new LatLng(50.85045, 4.34878);
-        if (mPlace != null) {
-            map = mPlace.getLatLng();
+        if (gPlace != null) {
+            map = gPlace.getLatLng();
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLng(map));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(map, 16));
@@ -92,30 +178,37 @@ public class PlaceDetailsActivity extends FragmentActivity implements OnMapReady
         @Override
         public void onResult(PlaceBuffer places) {
             if (!places.getStatus().isSuccess()) {
-                placeDetails.setText(places.getStatus().getStatusMessage());
+                placeDetailsAll.setText(places.getStatus().getStatusMessage());
                 return;
             }
             // Selecting the first object buffer.
-            mPlace = places.get(0);
-            if (mPlace != null) {
-                map = mPlace.getLatLng();
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(map));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(map, 16));
-                mMap.addMarker(new MarkerOptions().position(mPlace.getLatLng()).title(mPlace.getName().toString()));
+            if(places.getCount() > 0) {
+                gPlace = places.get(0);
+                if (gPlace != null) {
+                    map = gPlace.getLatLng();
+                    Log.d(TAG, map.toString());
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(map));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(map, 16));
+                    mMap.addMarker(new MarkerOptions().position(gPlace.getLatLng()).title(gPlace.getName().toString()));
 
-                String placeDetailsString = placeDetailsToString(mPlace);
-                Log.d(TAG, placeDetailsString);
-                placeDetails.setText(placeDetailsString);
+                    ratingBar.setRating(gPlace.getRating());
+                    placeDetailsName.setText(gPlace.getName());
+                    placeDetailsAll.setText(getPlaceDetailsAll());
+                }
+            } else {
+                placeDetailsAll.setText("Place not found");
             }
             places.release();
         }
     };
 
-    public String placeDetailsToString(Place place){
-        String str = "Name : " + place.getName().toString() + "\n";
-        str += "Address : " + place.getAddress().toString() + "\n";
-        str += "Phone number : " + place.getPhoneNumber().toString() + "\n";
-        str += "WebSite : " + place.getWebsiteUri().toString() + "\n";
+    public String getPlaceDetailsAll(){
+        String str = "";
+        str += "Address : " + gPlace.getAddress().toString() + "\n";
+        str += "Phone : " + gPlace.getPhoneNumber().toString() + "\n";
+        str += "WebSite : " + gPlace.getWebsiteUri().toString() + "\n";
+        Log.d(TAG, str);
         return str;
     }
+
 }

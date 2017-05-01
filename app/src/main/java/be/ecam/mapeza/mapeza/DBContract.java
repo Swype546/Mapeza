@@ -9,7 +9,7 @@ import android.provider.BaseColumns;
 public class DBContract {
     public static final class PlaceEntry implements BaseColumns {
         public static final String TABLE_NAME = "favorites";
-        public static final String PLACE_ID = "id";
+        public static final String PLACE_ID = "place_id";
         public static final String PLACE_ADDRESS = "address";
         public static final String PLACE_NAME = "name";
         public static final String PLACE_TYPE = "type";
