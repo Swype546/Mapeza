@@ -58,7 +58,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
     // The entry point to Google Play services, used by the Places API and Fused Location Provider.
     private GoogleApiClient mGoogleApiClient;
 
-    // A default location Brussel and default zoom to use when location permission is
+    // A default location Brussels and default zoom to use when location permission is
     // not granted.
     private final LatLng mDefaultLocation = new LatLng(50.85045, 4.34878);
     private static final int DEFAULT_ZOOM = 15;
