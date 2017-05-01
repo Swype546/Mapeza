@@ -9,11 +9,13 @@ Contributing
 
 ECAM 2016-2017
 
-Yannick BERCKMANS
-Zakariya BOUHADDI
-Hadrien COOLS
-Othman MEJDOUBI
-Thibaut RUBENS
+<ul>
+    <li>Yannick BERCKMANS</li>
+    <li>Zakariya BOUHADDI</li>
+    <li>Hadrien COOLS</li>
+    <li>Othman MEJDOUBI</li>
+    <li>Thibaut RUBENS</li>
+</ul>
 
 Google API Key
 -------
