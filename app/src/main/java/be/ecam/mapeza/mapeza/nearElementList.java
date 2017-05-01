@@ -3,6 +3,7 @@ package be.ecam.mapeza.mapeza;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -45,7 +46,7 @@ public class nearElementList extends AppCompatActivity implements ItemAdapter.It
         resultView.setAdapter(itemAdapter);
 
         LoaderManager loaderManager = getSupportLoaderManager();
-        Toast.makeText(this,"hello",Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,"hello",Toast.LENGTH_LONG).show();
 
         //On charge les nearbyPlaces
         loaderManager.restartLoader(QUERY_LOADER,queryURL,this);
@@ -75,8 +76,18 @@ public class nearElementList extends AppCompatActivity implements ItemAdapter.It
             }
 
             @Override
-            public ArrayList<Place> loadInBackground(){
-                return getPlaces(500.0);
+            public ArrayList<Place> loadInBackground()
+            {
+                Gson gson = new Gson();
+                SharedPreferences mPrefs;
+                mPrefs = PreferenceManager.getDefaultSharedPreferences(nearElementList.this);
+                String json = mPrefs.getString("favoriteSelectedTypePlaceList", "");
+                ArrayList<String> favoriteSelectedTypePlaceList = gson.fromJson(json, ArrayList.class);
+                String[] myPlaceName = null;
+                myPlaceName = favoriteSelectedTypePlaceList.toArray(new String[ favoriteSelectedTypePlaceList.size()]);
+
+                Place.clearArray();
+                return getPlaces(500.0,myPlaceName);
             };
         };
     }

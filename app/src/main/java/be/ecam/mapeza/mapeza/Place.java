@@ -60,5 +60,8 @@ public class Place {
     public double getLng(){return this.lng;}
     public static ArrayList<Place> getPlaces(){return array;}
     public static Place getPlaceById(int index) { return array.get(index);}
-
+    public static void clearArray()
+    {
+        array.clear();
+    }
 }
