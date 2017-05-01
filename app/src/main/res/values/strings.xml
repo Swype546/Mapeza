@@ -5,6 +5,11 @@
     <string name="default_info_snippet" />
     <string name="pick_place" />
 
-    <string name="title_activity_place_details">Map</string>
+    <string name="title_activity_place_details">Place details</string>
+    <string name="favorite_place_btn">Favorite place button</string>
+    <string name="title_activity_favorites">Favorite places</string>
+    <string name="nearElementList">Nearby places</string>
+    <string name="settings">Settings</string>
+
 
 </resources>

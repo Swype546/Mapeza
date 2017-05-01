@@ -1,22 +1,87 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <TextView
-        android:id="@+id/place_details_text"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:padding="16dp"/>
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_above="@+id/placeDetailsMap"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/holo_orange_light"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/PlaceDetailsName"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/placeDetailsFavBtn"
+            android:layout_toStartOf="@+id/placeDetailsFavBtn"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/placeDetailsFavBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="#00ffffff"
+            android:contentDescription="@string/favorite_place_btn"
+            android:onClick="onToggleStar"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:src="@drawable/star" />
+
+        <RatingBar
+            android:id="@+id/PlaceDetailsRatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/PlaceDetailsName"
+            android:numStars="5"
+            android:paddingStart="10dp"
+            android:rating="0.1"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:transformPivotX="0dp" />
+
+        <TextView
+            android:id="@+id/placeDetailsAll"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/placeDetailsFavBtn"
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/placeDetailsFavBtn"
+            android:layout_below="@+id/PlaceDetailsRatingBar"
+            android:padding="10dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp" />
+
+
+    </RelativeLayout>
+
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/map"
+        android:id="@+id/placeDetailsMap"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        tools:context="be.ecam.a12117.mejdoubi.PlaceDetailsActivity" />
+        android:layout_height="265dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        tools:context="be.ecam.mapeza.mapeza.PlaceDetailsActivity" />
 
-</LinearLayout>
+</RelativeLayout>
