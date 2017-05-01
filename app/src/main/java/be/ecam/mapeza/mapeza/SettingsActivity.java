@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 /**
- * Created by Othman on 01-05-17.
+ * Created by Hadrien on 01-05-17.
  */
 
 public class SettingsActivity extends AppCompatActivity {

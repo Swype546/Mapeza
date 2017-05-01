@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="be.ecam.mapeza.mapeza">
 
+    <!-- PERMISSIONS -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,16 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-
+        <!-- Thibaut -->
         <activity
-            android:name=".MapsActivityCurrentPlace"
-            android:label="@string/title_activity_nearElementMap">
-		</activity>
-
-
-        <activity
-            android:name=".PlaceDetailsActivity"
-            android:label="@string/title_activity_place_details">
+            android:name=".HomeActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <!-- MAIN represents that it is the Main Activity-->
                 <action android:name="android.intent.action.MAIN" />
@@ -32,24 +27,41 @@
             </intent-filter>
         </activity>
 
-
-        <activity android:name=".HomeActivity"
-            android:label="@string/app_name">
-
-        </activity>
-        <activity android:name=".nearElementList"
+        <!-- Yannick -->
+        <activity
+            android:name=".nearElementList"
             android:label="@string/title_activity_nearElementList">
         </activity>
 
+        <!-- Zakariya -->
+        <activity
+            android:name=".MapsActivityCurrentPlace"
+            android:label="@string/title_activity_nearElementMap">
+		</activity>
+
+        <!-- Othman/Yannick -->
+        <activity
+            android:name=".FavoritesActivity"
+            android:label="@string/title_activity_favorites">
+        </activity>
+
+        <!-- Othman -->
+        <activity
+            android:name=".PlaceDetailsActivity"
+            android:label="@string/title_activity_place_details">
+        </activity>
+
+        <!-- Hadrien -->
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings">
+        </activity>
+
+
+        <!-- Google API KEY -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
-        <activity android:name=".FavoritesActivity"
-            android:label="@string/title_activity_favorites">
-
-
-        </activity>
     </application>
 
 </manifest>
