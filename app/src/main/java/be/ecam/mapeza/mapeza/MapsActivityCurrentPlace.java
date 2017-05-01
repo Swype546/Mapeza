@@ -7,9 +7,11 @@ package be.ecam.mapeza.mapeza;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
@@ -19,6 +21,8 @@ import android.support.v4.content.Loader;
 
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 
 import com.google.android.gms.common.ConnectionResult;
@@ -113,6 +117,30 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.near_element_map_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        if (id == R.id.MnearElementList) {
+            Intent intent = new Intent(this, nearElementList.class);
+            startActivity(intent);
+        }
+        if (id == R.id.Mfavorites) {
+            Intent intent = new Intent(this, FavoritesActivity.class);
+            startActivity(intent);
+        }
+        if (id == R.id.Msettings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public Loader<ArrayList<Place>> onCreateLoader(int id, final Bundle args) {
         return new AsyncTaskLoader<ArrayList<Place>>(this) {
             @Override
@@ -122,9 +150,21 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
             @Override
             public ArrayList<Place> loadInBackground(){
-                //return getPlaces(500.0);
-                return new ArrayList<Place>();
-            };
+                Gson gson = new Gson();
+                SharedPreferences mPrefs;
+                mPrefs = PreferenceManager.getDefaultSharedPreferences(MapsActivityCurrentPlace.this);
+                String json = mPrefs.getString("favoriteSelectedTypePlaceList", "");
+                ArrayList<String> favoriteSelectedTypePlaceList = gson.fromJson(json, ArrayList.class);
+                String[] myPlaceName = null;
+                if(favoriteSelectedTypePlaceList == null){
+                    // default if no sharedpreferences selected
+                    myPlaceName = new String[]{ "bar", "restaurant" };
+                } else {
+                    myPlaceName = favoriteSelectedTypePlaceList.toArray(new String[ favoriteSelectedTypePlaceList.size()]);
+                }
+                Place.clearArray();
+                return getPlaces(500.0, myPlaceName);
+            }
         };
     }
 

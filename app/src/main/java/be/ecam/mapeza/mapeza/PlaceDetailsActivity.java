@@ -135,6 +135,34 @@ public class PlaceDetailsActivity extends AppCompatActivity implements OnMapRead
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.place_details_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        if (id == R.id.MnearElementList) {
+            Intent intent = new Intent(this, nearElementList.class);
+            startActivity(intent);
+        }
+        if (id == R.id.MmapsCurrentPlace) {
+            Intent intent = new Intent(this, MapsActivityCurrentPlace.class);
+            startActivity(intent);
+        }
+        if (id == R.id.Mfavorites) {
+            Intent intent = new Intent(this, FavoritesActivity.class);
+            startActivity(intent);
+        }
+        if (id == R.id.Msettings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void showToast(String txt) {
         Toast.makeText(this, txt, Toast.LENGTH_LONG).show();
     }

@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -84,17 +86,45 @@ public class nearElementList extends AppCompatActivity implements ItemAdapter.It
                 String json = mPrefs.getString("favoriteSelectedTypePlaceList", "");
                 ArrayList<String> favoriteSelectedTypePlaceList = gson.fromJson(json, ArrayList.class);
                 String[] myPlaceName = null;
-                myPlaceName = favoriteSelectedTypePlaceList.toArray(new String[ favoriteSelectedTypePlaceList.size()]);
-
+                if(favoriteSelectedTypePlaceList == null){
+                    // default if no sharedpreferences selected
+                    myPlaceName = new String[]{ "bar", "restaurant" };
+                } else {
+                    myPlaceName = favoriteSelectedTypePlaceList.toArray(new String[ favoriteSelectedTypePlaceList.size()]);
+                }
                 Place.clearArray();
-                return getPlaces(500.0,myPlaceName);
-            };
+                return getPlaces(500.0, myPlaceName);
+            }
         };
     }
 
     @Override
     public void onLoadFinished(Loader<ArrayList<Place>> loader, ArrayList<Place> data){
         itemAdapter.setData(data);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.near_element_list_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        if (id == R.id.MmapsCurrentPlace) {
+            Intent intent = new Intent(this, MapsActivityCurrentPlace.class);
+            startActivity(intent);
+        }
+        if (id == R.id.Mfavorites) {
+            Intent intent = new Intent(this, FavoritesActivity.class);
+            startActivity(intent);
+        }
+        if (id == R.id.Msettings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.google.gson.Gson;
 
@@ -43,6 +45,30 @@ public class FavoritesActivity extends AppCompatActivity implements ItemAdapter.
 
         LoaderManager loaderManager = getSupportLoaderManager();
         loaderManager.restartLoader(QUERY_LOADER,queryURL,this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.favorites_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        if (id == R.id.MnearElementList) {
+            Intent intent = new Intent(this, nearElementList.class);
+            startActivity(intent);
+        }
+        if (id == R.id.MmapsCurrentPlace) {
+            Intent intent = new Intent(this, MapsActivityCurrentPlace.class);
+            startActivity(intent);
+        }
+        if (id == R.id.Msettings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

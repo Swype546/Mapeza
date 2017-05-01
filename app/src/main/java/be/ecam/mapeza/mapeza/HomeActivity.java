@@ -1,5 +1,4 @@
 package be.ecam.mapeza.mapeza;
-// à remplacer par le nom de domaine adéquat : be.ecam.mapeza.mapeza
 
 import android.content.Context;
 import android.content.Intent;

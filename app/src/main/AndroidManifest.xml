@@ -17,17 +17,13 @@
 
         <activity
             android:name=".MapsActivityCurrentPlace"
-            android:label="@string/app_name">
+            android:label="@string/title_activity_nearElementMap">
 		</activity>
 
 
         <activity
             android:name=".PlaceDetailsActivity"
             android:label="@string/title_activity_place_details">
-        </activity>
-
-
-        <activity android:name=".HomeActivity">
             <intent-filter>
                 <!-- MAIN represents that it is the Main Activity-->
                 <action android:name="android.intent.action.MAIN" />
@@ -35,7 +31,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".nearElementList">
+
+
+        <activity android:name=".HomeActivity"
+            android:label="@string/app_name">
+
+        </activity>
+        <activity android:name=".nearElementList"
+            android:label="@string/title_activity_nearElementList">
         </activity>
 
         <meta-data
