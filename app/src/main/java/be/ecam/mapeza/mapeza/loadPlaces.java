@@ -15,11 +15,10 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class loadPlaces {
-
-    public static ArrayList<Place> getPlaces(double radius, String[] myPlaceName){
+    public static ArrayList<Place> getPlaces(double radius, String[] myPlaceName, Double myLatPosition, Double myLngPosition){
         //Nos coordonnées: à récupérer (position actuelle)
-        Double myLatPosition = 50.8503;
-        Double myLonPosition = 4.3517;
+        //myLatPosition = 50.8503;
+        //myLonPosition = 4.3517;
         Double myPlaceDistanceMeters = radius;
 
 
@@ -27,15 +26,11 @@ public class loadPlaces {
         // qui est a récupérer du sharedpreferences: on doit boucler dessus
 
         ArrayList<String> JSON = new ArrayList<String>();
-
-
-
         try {
             for(int i=0; i<myPlaceName.length; i++) {
                 //Log.v("test",myPlaceName[i]);
-
                 String nearByPlaceSearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
-                        + "location=" + myLatPosition + "," + myLonPosition
+                        + "location=" + myLatPosition + "," + myLngPosition
                         + "&radius=" + myPlaceDistanceMeters
                         + "&types=" + myPlaceName[i]
                         + "&key=" + "AIzaSyBLkj8WSx2AjfJNN0-BEYplZQWwNs8mYBU";
@@ -44,10 +39,7 @@ public class loadPlaces {
 
                 String tempJSON = NetworkUtils.getResponseFromHttpUrl(nearByPlaceSearchURL);
                 Place.parse(tempJSON, myPlaceName[i]);
-
-
             }
-
             return Place.getPlaces();
         }catch (Exception e){
             return null;

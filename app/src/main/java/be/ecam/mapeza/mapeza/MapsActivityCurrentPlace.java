@@ -80,9 +80,8 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION = "location";
 
-
+    private ArrayList<Place> places;
     private Context MapsActivityCurrentPlace = this;
-    private int indexPlaceinArray;
 
     private static final int QUERY_LOADER = 22;
     Bundle queryURL = new Bundle();
@@ -111,9 +110,34 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                 .addApi(Places.PLACE_DETECTION_API)
                 .build();
         mGoogleApiClient.connect();
+    }
 
-        LoaderManager loaderManager = getSupportLoaderManager();
-        loaderManager.restartLoader(QUERY_LOADER,queryURL,this);
+    @Override
+    public Loader<ArrayList<Place>> onCreateLoader(int id, final Bundle args) {
+        return new AsyncTaskLoader<ArrayList<Place>>(this) {
+            @Override
+            protected void onStartLoading() {
+                forceLoad();
+            }
+
+            @Override
+            public ArrayList<Place> loadInBackground(){
+                Gson gson = new Gson();
+                SharedPreferences mPrefs;
+                mPrefs = PreferenceManager.getDefaultSharedPreferences(MapsActivityCurrentPlace.this);
+                String json = mPrefs.getString("favoriteSelectedTypePlaceList", "");
+                ArrayList<String> favoriteSelectedTypePlaceList = gson.fromJson(json, ArrayList.class);
+                String[] myPlaceName = null;
+                if(favoriteSelectedTypePlaceList == null){
+                    // default if no sharedpreferences selected
+                    myPlaceName = new String[]{ "bar", "restaurant" };
+                } else {
+                    myPlaceName = favoriteSelectedTypePlaceList.toArray(new String[ favoriteSelectedTypePlaceList.size()]);
+                }
+                Place.clearArray();
+                return getPlaces(500.0, myPlaceName, MyCurrentLat, MyCurrentLong);
+            }
+        };
     }
 
     @Override
@@ -141,89 +165,45 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
     }
 
     @Override
-    public Loader<ArrayList<Place>> onCreateLoader(int id, final Bundle args) {
-        return new AsyncTaskLoader<ArrayList<Place>>(this) {
-            @Override
-            protected void onStartLoading() {
-                forceLoad();
-            }
-
-            @Override
-            public ArrayList<Place> loadInBackground(){
-                Gson gson = new Gson();
-                SharedPreferences mPrefs;
-                mPrefs = PreferenceManager.getDefaultSharedPreferences(MapsActivityCurrentPlace.this);
-                String json = mPrefs.getString("favoriteSelectedTypePlaceList", "");
-                ArrayList<String> favoriteSelectedTypePlaceList = gson.fromJson(json, ArrayList.class);
-                String[] myPlaceName = null;
-                if(favoriteSelectedTypePlaceList == null){
-                    // default if no sharedpreferences selected
-                    myPlaceName = new String[]{ "bar", "restaurant" };
-                } else {
-                    myPlaceName = favoriteSelectedTypePlaceList.toArray(new String[ favoriteSelectedTypePlaceList.size()]);
-                }
-                Place.clearArray();
-                return getPlaces(500.0, myPlaceName);
-            }
-        };
-    }
-
-    @Override
     public void onLoaderReset(Loader<ArrayList<Place>> loader){}
 
     @Override
     public void onLoadFinished(Loader<ArrayList<Place>> loader, ArrayList<Place> data){
-        // Get the current location of the device and set the position of the map.
-        getDeviceLocation();
-
-        MyCurrentLat = mLastKnownLocation.getLatitude();
-        MyCurrentLong = mLastKnownLocation.getLongitude();
-        LatLng MyCurrentLocation = new LatLng(MyCurrentLat,MyCurrentLong);
-        mMap.addMarker(new MarkerOptions().position(MyCurrentLocation)
-                .title("Ma Position Actuelle"));
-
-        final ArrayList<Place> places = data;
-
-
+        this.places = data;
         for(int i = 0; i < places.size(); i++){
-            indexPlaceinArray = i;
             double placeLat = places.get(i).getLat();
             double placeLng = places.get(i).getLng();
             LatLng placeLatLng = new LatLng(placeLat,placeLng);
             mMap.addMarker(new MarkerOptions().position(placeLatLng)
-                    .title(places.get(i).getPlace_name()));
+                    .title(String.valueOf(i)));
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker arg0) {
-
-                        Marker prevMarker = null;
-
+                    Marker marker = arg0;
+                    if(arg0.getTitle() != "Ma Position Actuelle") {
+                        int id = Integer.valueOf(arg0.getTitle());
                         Intent intent = new Intent(MapsActivityCurrentPlace, PlaceDetailsActivity.class);
-                        //intent.putExtra("PlaceDetails", new Gson().toJson(places.get(Integer.valueOf(arg0.getId()))));
-                        intent.putExtra("PlaceDetails", new Gson().toJson(places.get(indexPlaceinArray)));
-                        if (prevMarker != null) {
+                        intent.putExtra("PlaceDetails", new Gson().toJson(places.get(id)));
+                        if (marker != null) {
                             //Set prevMarker back to default color
-                            prevMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                         }
 
                         //leave Marker default color if re-click current Marker
-                        if (!arg0.equals(prevMarker)) {
+                        if (!arg0.equals(marker)) {
                             arg0.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                            prevMarker = arg0;
                         }
-                        prevMarker = arg0;
 
                         startActivity(intent);
-                        return false;
-
-                        //return true;
-
+                        return true;
+                    } else {
+                        arg0.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                    }
+                    return false;
                 }
-
-
             });
 
-            Log.d(TAG, places.get(indexPlaceinArray).getPlace_name());
+            Log.d(TAG, places.get(i).getPlace_name());
         }
     }
 
@@ -281,12 +261,22 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
         // Use a custom info window adapter to handle multiple lines of text in the
         // info window contents.
         //mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-
-
         //});
 
         // Turn on the My Location layer and the related control on the map.
         updateLocationUI();
+
+        // Get the current location of the device and set the position of the map.
+        getDeviceLocation();
+
+        MyCurrentLat = mLastKnownLocation.getLatitude();
+        MyCurrentLong = mLastKnownLocation.getLongitude();
+        LatLng MyCurrentLocation = new LatLng(MyCurrentLat,MyCurrentLong);
+        mMap.addMarker(new MarkerOptions().position(MyCurrentLocation)
+                .title("Ma Position Actuelle"));
+
+        LoaderManager loaderManager = getSupportLoaderManager();
+        loaderManager.restartLoader(QUERY_LOADER,queryURL,this);
     }
 
     /**

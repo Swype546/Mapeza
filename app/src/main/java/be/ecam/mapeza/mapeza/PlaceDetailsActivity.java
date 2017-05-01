@@ -217,10 +217,18 @@ public class PlaceDetailsActivity extends AppCompatActivity implements OnMapRead
                     Log.d(TAG, map.toString());
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(map));
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(map, 16));
-                    mMap.addMarker(new MarkerOptions().position(gPlace.getLatLng()).title(gPlace.getName().toString()));
+                    if (gPlace.getName() != null) {
+                        mMap.addMarker(new MarkerOptions().position(gPlace.getLatLng()).title(gPlace.getName().toString()));
+                    } else {
+                        mMap.addMarker(new MarkerOptions().position(gPlace.getLatLng()));
+                    }
 
                     ratingBar.setRating(gPlace.getRating());
-                    placeDetailsName.setText(gPlace.getName());
+                    if (gPlace.getName() != null) {
+                        placeDetailsName.setText(gPlace.getName());
+                    } else {
+                        placeDetailsName.setText("Unnamed");
+                    }
                     placeDetailsAll.setText(getPlaceDetailsAll());
                 }
             } else {
@@ -232,9 +240,15 @@ public class PlaceDetailsActivity extends AppCompatActivity implements OnMapRead
 
     public String getPlaceDetailsAll(){
         String str = "";
-        str += "Address : " + gPlace.getAddress().toString() + "\n";
-        str += "Phone : " + gPlace.getPhoneNumber().toString() + "\n";
-        str += "WebSite : " + gPlace.getWebsiteUri().toString() + "\n";
+        if (gPlace.getAddress() != null) {
+            str += "Address : " + gPlace.getAddress().toString() + "\n";
+        }
+        if (gPlace.getPhoneNumber() != null) {
+            str += "Phone : " + gPlace.getPhoneNumber().toString() + "\n";
+        }
+        if (gPlace.getWebsiteUri() != null) {
+            str += "WebSite : " + gPlace.getWebsiteUri().toString() + "\n";
+        }
         Log.d(TAG, str);
         return str;
     }
