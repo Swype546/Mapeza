@@ -15,7 +15,7 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class loadPlaces {
-    public static ArrayList<Place> getPlaces(double radius, String[] myPlaceName, Double myLatPosition, Double myLngPosition){
+    public static ArrayList<Place> getPlaces(String apiKey, double radius, String[] myPlaceName, Double myLatPosition, Double myLngPosition){
         //Nos coordonnées: à récupérer (position actuelle)
         //myLatPosition = 50.8503;
         //myLonPosition = 4.3517;
@@ -25,6 +25,7 @@ public class loadPlaces {
         // myPlaceName représente un array de string
         // qui est a récupérer du sharedpreferences: on doit boucler dessus
 
+
         ArrayList<String> JSON = new ArrayList<String>();
         try {
             for(int i=0; i<myPlaceName.length; i++) {
@@ -33,7 +34,7 @@ public class loadPlaces {
                         + "location=" + myLatPosition + "," + myLngPosition
                         + "&radius=" + myPlaceDistanceMeters
                         + "&types=" + myPlaceName[i]
-                        + "&key=" + "AIzaSyBLkj8WSx2AjfJNN0-BEYplZQWwNs8mYBU";
+                        + "&key=" + apiKey;
 
                 Log.v("test",nearByPlaceSearchURL);
 

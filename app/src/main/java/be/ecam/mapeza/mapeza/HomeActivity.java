@@ -164,9 +164,10 @@ public class HomeActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 String json = gson.toJson(favoriteSelectedTypePlaceList); // myObject - instance of MyObject
                 prefsEditor.putString("favoriteSelectedTypePlaceList", json);
-
+                /*
                 Toast.makeText(getApplicationContext(),
                         json, Toast.LENGTH_LONG).show();
+                        */
                 prefsEditor.commit();
 
                 Class destinationClass = nearElementList.class;

@@ -135,7 +135,8 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                     myPlaceName = favoriteSelectedTypePlaceList.toArray(new String[ favoriteSelectedTypePlaceList.size()]);
                 }
                 Place.clearArray();
-                return getPlaces(500.0, myPlaceName, MyCurrentLat, MyCurrentLong);
+                String apiKey = getResources().getString(R.string.google_maps_key);
+                return getPlaces(apiKey, 500.0, myPlaceName, MyCurrentLat, MyCurrentLong);
             }
         };
     }
@@ -158,7 +159,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
             startActivity(intent);
         }
         if (id == R.id.Msettings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
+            Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -179,21 +180,10 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker arg0) {
-                    Marker marker = arg0;
-                    if(arg0.getTitle() != "Ma Position Actuelle") {
+                    if(!arg0.getId().equals("m0")) {
                         int id = Integer.valueOf(arg0.getTitle());
                         Intent intent = new Intent(MapsActivityCurrentPlace, PlaceDetailsActivity.class);
                         intent.putExtra("PlaceDetails", new Gson().toJson(places.get(id)));
-                        if (marker != null) {
-                            //Set prevMarker back to default color
-                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                        }
-
-                        //leave Marker default color if re-click current Marker
-                        if (!arg0.equals(marker)) {
-                            arg0.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                        }
-
                         startActivity(intent);
                         return true;
                     } else {
@@ -202,8 +192,6 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                     return false;
                 }
             });
-
-            Log.d(TAG, places.get(i).getPlace_name());
         }
     }
 

@@ -56,7 +56,7 @@ public class PlaceDetailsActivity extends AppCompatActivity implements OnMapRead
         this.placeId = "ChIJMSHd8mnEw0cR5So9dEPw0lU";
         String name = "ECAM";
         String addr = "Prom. de l'Alma 50, 1200 Woluwe-Saint-Lambert, Belgium";
-        String type = "School";
+        String type = "school";
         Double lat = 50.8501926;
         Double lng = 4.4541356;
         this.mPlace = new be.ecam.mapeza.mapeza.Place(this.placeId, name,
@@ -157,7 +157,7 @@ public class PlaceDetailsActivity extends AppCompatActivity implements OnMapRead
             startActivity(intent);
         }
         if (id == R.id.Msettings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
+            Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -217,14 +217,14 @@ public class PlaceDetailsActivity extends AppCompatActivity implements OnMapRead
                     Log.d(TAG, map.toString());
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(map));
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(map, 16));
-                    if (gPlace.getName() != null) {
+                    if (gPlace.getName() != null && !gPlace.getName().equals("")) {
                         mMap.addMarker(new MarkerOptions().position(gPlace.getLatLng()).title(gPlace.getName().toString()));
                     } else {
                         mMap.addMarker(new MarkerOptions().position(gPlace.getLatLng()));
                     }
 
                     ratingBar.setRating(gPlace.getRating());
-                    if (gPlace.getName() != null) {
+                    if (gPlace.getName() != null && !gPlace.getName().equals("")) {
                         placeDetailsName.setText(gPlace.getName());
                     } else {
                         placeDetailsName.setText("Unnamed");
@@ -240,14 +240,14 @@ public class PlaceDetailsActivity extends AppCompatActivity implements OnMapRead
 
     public String getPlaceDetailsAll(){
         String str = "";
-        if (gPlace.getAddress() != null) {
+        if (gPlace.getAddress() != null && !gPlace.getAddress().equals("")) {
             str += "Address : " + gPlace.getAddress().toString() + "\n";
         }
-        if (gPlace.getPhoneNumber() != null) {
+        if (gPlace.getPhoneNumber() != null && !gPlace.getPhoneNumber().equals("")) {
             str += "Phone : " + gPlace.getPhoneNumber().toString() + "\n";
         }
-        if (gPlace.getWebsiteUri() != null) {
-            str += "WebSite : " + gPlace.getWebsiteUri().toString() + "\n";
+        if (gPlace.getWebsiteUri() != null && !gPlace.getWebsiteUri().equals("")) {
+            str += "WebSite : " + gPlace.getWebsiteUri().toString();
         }
         Log.d(TAG, str);
         return str;

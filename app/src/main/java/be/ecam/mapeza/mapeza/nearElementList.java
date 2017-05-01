@@ -167,7 +167,8 @@ public class nearElementList extends AppCompatActivity
                     myPlaceName = favoriteSelectedTypePlaceList.toArray(new String[ favoriteSelectedTypePlaceList.size()]);
                 }
                 Place.clearArray();
-                return getPlaces(500.0, myPlaceName, MyCurrentLat, MyCurrentLong);
+                String apiKey = getResources().getString(R.string.google_maps_key);
+                return getPlaces(apiKey, 500.0, myPlaceName, MyCurrentLat, MyCurrentLong);
             }
         };
     }
@@ -195,7 +196,7 @@ public class nearElementList extends AppCompatActivity
             startActivity(intent);
         }
         if (id == R.id.Msettings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
+            Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

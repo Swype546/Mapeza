@@ -65,7 +65,7 @@ public class FavoritesActivity extends AppCompatActivity implements ItemAdapter.
             startActivity(intent);
         }
         if (id == R.id.Msettings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
+            Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

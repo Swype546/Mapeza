@@ -52,10 +52,6 @@
         </activity>
 
         <!-- Hadrien -->
-        <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings">
-        </activity>
 
 
         <!-- Google API KEY -->
