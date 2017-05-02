@@ -36,8 +36,6 @@ public class loadPlaces {
                         + "&types=" + myPlaceName[i]
                         + "&key=" + apiKey;
 
-                Log.v("test",nearByPlaceSearchURL);
-
                 String tempJSON = NetworkUtils.getResponseFromHttpUrl(nearByPlaceSearchURL);
                 Place.parse(tempJSON, myPlaceName[i]);
             }
