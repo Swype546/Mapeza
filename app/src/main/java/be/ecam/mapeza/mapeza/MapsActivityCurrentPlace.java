@@ -257,14 +257,16 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
 
-        MyCurrentLat = mLastKnownLocation.getLatitude();
-        MyCurrentLong = mLastKnownLocation.getLongitude();
-        LatLng MyCurrentLocation = new LatLng(MyCurrentLat,MyCurrentLong);
-        mMap.addMarker(new MarkerOptions().position(MyCurrentLocation)
-                .title("Ma Position Actuelle"));
+        if(mLastKnownLocation != null) {
+            MyCurrentLat = mLastKnownLocation.getLatitude();
+            MyCurrentLong = mLastKnownLocation.getLongitude();
+            LatLng MyCurrentLocation = new LatLng(MyCurrentLat, MyCurrentLong);
+            mMap.addMarker(new MarkerOptions().position(MyCurrentLocation)
+                    .title("Ma Position Actuelle"));
 
-        LoaderManager loaderManager = getSupportLoaderManager();
-        loaderManager.restartLoader(QUERY_LOADER,queryURL,this);
+            LoaderManager loaderManager = getSupportLoaderManager();
+            loaderManager.restartLoader(QUERY_LOADER, queryURL, this);
+        }
     }
 
     /**

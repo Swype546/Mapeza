@@ -115,11 +115,13 @@ public class nearElementList extends AppCompatActivity
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
 
-        MyCurrentLat = mLastKnownLocation.getLatitude();
-        MyCurrentLong = mLastKnownLocation.getLongitude();
+        if(mLastKnownLocation != null) {
+            MyCurrentLat = mLastKnownLocation.getLatitude();
+            MyCurrentLong = mLastKnownLocation.getLongitude();
 
-        LoaderManager loaderManager = getSupportLoaderManager();
-        loaderManager.restartLoader(QUERY_LOADER,queryURL,this);
+            LoaderManager loaderManager = getSupportLoaderManager();
+            loaderManager.restartLoader(QUERY_LOADER, queryURL, this);
+        }
     }
 
     /**
